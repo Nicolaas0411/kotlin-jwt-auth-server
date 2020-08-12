@@ -48,7 +48,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         }
 
         // Optional, if you want to test the API from a browser
-        // http.httpBasic();
+        // http.httpBasic()
+
+        http.cors()
     }
 
     @Throws(Exception::class)

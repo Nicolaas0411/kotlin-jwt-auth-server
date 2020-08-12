@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
+@CrossOrigin(origins = ["*"])
 @RequestMapping("/users")
-@CrossOrigin
 @Api(tags = ["users"])
 class UserController {
     @Autowired
