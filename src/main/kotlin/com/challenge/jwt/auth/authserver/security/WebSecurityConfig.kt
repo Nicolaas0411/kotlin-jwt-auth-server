@@ -25,43 +25,31 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Throws(java.lang.Exception::class)
     override fun configure(http: HttpSecurity) {
-
-        // Disable CSRF (cross site request forgery)
         http.csrf().disable()
-
-        // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-        // Entry points
         http.authorizeRequests() //
-                .antMatchers("/users/signin").permitAll() //
-                .antMatchers("/users/signup").permitAll() //
-                .antMatchers("/h2-console/**/**").permitAll() // Disallow everything else..
+                .antMatchers("/users/signin").permitAll()
+                .antMatchers("/users/signup").permitAll()
+                .antMatchers("/h2-console/**/**").permitAll()
                 .anyRequest().authenticated()
 
-        // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login")
 
-        // Apply JWT
         if(jwtTokenProvider != null){
             http.apply(JwtTokenFilterConfig(jwtTokenProvider))
         }
-
-        // Optional, if you want to test the API from a browser
-        // http.httpBasic()
 
         http.cors()
     }
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
-        // Allow swagger to be accessed without authentication
-        web.ignoring().antMatchers("/v2/api-docs") //
-                .antMatchers("/swagger-resources/**") //
-                .antMatchers("/swagger-ui.html") //
-                .antMatchers("/configuration/**") //
-                .antMatchers("/webjars/**") //
-                .antMatchers("/public") // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
+        web.ignoring().antMatchers("/v2/api-docs")
+                .antMatchers("/swagger-resources/**")
+                .antMatchers("/swagger-ui.html")
+                .antMatchers("/configuration/**")
+                .antMatchers("/webjars/**")
+                .antMatchers("/public")
                 .and()
                 .ignoring()
                 .antMatchers("/h2-console/**/**")
