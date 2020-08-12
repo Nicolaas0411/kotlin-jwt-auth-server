@@ -38,7 +38,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         if(jwtTokenProvider != null){
             http.apply(JwtTokenFilterConfig(jwtTokenProvider))
         }
-
         http.cors()
     }
 

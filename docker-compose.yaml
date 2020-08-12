@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+    db:
+      image: postgres
+      environment:
+        - POSTGRES_DB=envel-db
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=password
+
+    auth-server:
+      image: kotlin-jwt-auth:0.0.1-SNAPSHOT
+      ports:
+        - "8080:8080"
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db/envel-db
+      volumes:
+        - $HOME/docker/volumes/postgres:/var/lib/postgresql/data
+      links:
+        - db
+
+    next-app:
+      image: next-js-login-jwt:latest
+      ports:
+        - "3000:3000"
